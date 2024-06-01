@@ -1,0 +1,546 @@
+{
+    "smog_data": [
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 2 IM. STANISŁAWA KONARSKIEGO W STAREJ WSI",
+          "street": null,
+          "post_code": "34-600",
+          "city": "STARA WIEŚ",
+          "longitude": "20.4262381",
+          "latitude": "49.6797439"
+        },
+        "data": {
+          "humidity_avg": 27.925,
+          "pressure_avg": 958.55,
+          "temperature_avg": 22.3083333333333,
+          "pm10_avg": 4.40833333333333,
+          "pm25_avg": 4.18333333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. JANA PAWŁA II W GIERAŁTOWIE",
+          "street": null,
+          "post_code": "59-730",
+          "city": "GIERAŁTÓW",
+          "longitude": "15.3124392",
+          "latitude": "51.205073"
+        },
+        "data": {
+          "humidity_avg": 56.325,
+          "pressure_avg": 997.841666666667,
+          "temperature_avg": 16.5416666666667,
+          "pm10_avg": 10.475,
+          "pm25_avg": 10.9833333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. STANISŁAWA STASZICA W BOBOWEJ",
+          "street": "UL. BOHATERÓW BOBOWEJ",
+          "post_code": "38-350",
+          "city": "BOBOWA",
+          "longitude": "20.9509659",
+          "latitude": "49.7102798"
+        },
+        "data": {
+          "humidity_avg": 44.325,
+          "pressure_avg": 988.05,
+          "temperature_avg": 17.125,
+          "pm10_avg": 5.84166666666667,
+          "pm25_avg": 5.09166666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. KS. JANA RECA W SIEDLISKACH",
+          "street": null,
+          "post_code": "38-350",
+          "city": "SIEDLISKA",
+          "longitude": "20.9844157",
+          "latitude": "49.7300798"
+        },
+        "data": {
+          "humidity_avg": 35.1333333333333,
+          "pressure_avg": 983.541666666667,
+          "temperature_avg": 21.5166666666667,
+          "pm10_avg": 5.69166666666667,
+          "pm25_avg": 5.175
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 8 IM. JANUSZA KORCZAKA W NOWEJ SOLI",
+          "street": "UL. MATEJKI",
+          "post_code": "67-100",
+          "city": "NOWA SÓL",
+          "longitude": "15.71707",
+          "latitude": "51.80344"
+        },
+        "data": {
+          "humidity_avg": 42.2333333333333,
+          "pressure_avg": 1016.20833333333,
+          "temperature_avg": 18.675,
+          "pm10_avg": 18.8416666666667,
+          "pm25_avg": 14.3
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 50 IM. WŁODZIMIERZA TETMAJERA W KRAKOWIE",
+          "street": "UL. KATOWICKA",
+          "post_code": "31-351",
+          "city": "KRAKÓW-KROWODRZA",
+          "longitude": "19.88192366",
+          "latitude": "50.08454303"
+        },
+        "data": {
+          "humidity_avg": 60.5416666666667,
+          "pressure_avg": 996.041666666667,
+          "temperature_avg": 19,
+          "pm10_avg": 18.4583333333333,
+          "pm25_avg": 17.2416666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 2 IM. JANA PAWŁA II W PORĘBIE",
+          "street": "UL. WIEDZY",
+          "post_code": "42-480",
+          "city": "PORĘBA",
+          "longitude": "19.361528",
+          "latitude": "50.489263"
+        },
+        "data": {
+          "humidity_avg": 34.675,
+          "pressure_avg": 984.4,
+          "temperature_avg": 19.6166666666667,
+          "pm10_avg": 2.3,
+          "pm25_avg": 2.025
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 2 IM. STEFANA ŻEROMSKIEGO W BRENNEJ",
+          "street": "UL. BUKOWA",
+          "post_code": "43-438",
+          "city": "BRENNA",
+          "longitude": "18.9436714",
+          "latitude": "49.7184394"
+        },
+        "data": {
+          "humidity_avg": 48.8583333333333,
+          "pressure_avg": 971.391666666667,
+          "temperature_avg": 16.5666666666667,
+          "pm10_avg": 11.0416666666667,
+          "pm25_avg": 10.1666666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. KAROLA MARCINKOWSKIEGO W LUDOMACH",
+          "street": null,
+          "post_code": "64-603",
+          "city": "LUDOMY",
+          "longitude": "16.8230475",
+          "latitude": "52.7545231"
+        },
+        "data": {
+          "humidity_avg": 64.8583333333333,
+          "pressure_avg": 1014.95,
+          "temperature_avg": 16.5916666666667,
+          "pm10_avg": 10.0333333333333,
+          "pm25_avg": 10.05
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. KS.JANA TWARDOWSKIEGO W SIENNEJ",
+          "street": "UL. ŚWIĘTEJ JADWIGI ŚLĄSKIEJ",
+          "post_code": "34-300",
+          "city": "SIENNA",
+          "longitude": "19.1480477",
+          "latitude": "49.6766991"
+        },
+        "data": {
+          "humidity_avg": 48.075,
+          "pressure_avg": 975.633333333333,
+          "temperature_avg": 19.6,
+          "pm10_avg": 5.30833333333333,
+          "pm25_avg": 4.18333333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM.KRZYSZTOFA KAMILA BACZYŃSKIEGO W LIPOWEJ",
+          "street": "UL. JANA PAWŁA II",
+          "post_code": "34-324",
+          "city": "LIPOWA",
+          "longitude": "19.0737787",
+          "latitude": "49.6985065"
+        },
+        "data": {
+          "humidity_avg": 41.95,
+          "pressure_avg": 967.4,
+          "temperature_avg": 17.625,
+          "pm10_avg": 5.2,
+          "pm25_avg": 5.475
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA Z ODDZIAŁAMI INTEGRACYJNYMI NR 148 IM. POLSKICH NOBLISTÓW W KRAKOWIE",
+          "street": "UL. ŻABIA",
+          "post_code": "30-809",
+          "city": "KRAKÓW-PODGÓRZE",
+          "longitude": "19.9959686",
+          "latitude": "50.0171518"
+        },
+        "data": {
+          "humidity_avg": 41.0416666666667,
+          "pressure_avg": 996.5,
+          "temperature_avg": 19.6833333333333,
+          "pm10_avg": 12.875,
+          "pm25_avg": 10.5416666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. EMILII SCZANIECKIEJ W SZCZAŃCU",
+          "street": "UL. SZKOLNA",
+          "post_code": "66-225",
+          "city": "SZCZANIEC",
+          "longitude": "15.6816113",
+          "latitude": "52.2692122"
+        },
+        "data": {
+          "humidity_avg": 61.7272727272727,
+          "pressure_avg": 1016.73636363636,
+          "temperature_avg": 16.9909090909091,
+          "pm10_avg": 6.64545454545455,
+          "pm25_avg": 6.38181818181818
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA W HUTKACH",
+          "street": null,
+          "post_code": "42-274",
+          "city": "HUTKI",
+          "longitude": "19.0062626",
+          "latitude": "50.6813486"
+        },
+        "data": {
+          "humidity_avg": 43.7416666666667,
+          "pressure_avg": 1100,
+          "temperature_avg": -40,
+          "pm10_avg": 3.975,
+          "pm25_avg": 4.4
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA W ZAWIDZU KOŚCIELNYM",
+          "street": "UL. MAZOWIECKA",
+          "post_code": "09-226",
+          "city": "ZAWIDZ KOŚCIELNY",
+          "longitude": "19.870229928959297",
+          "latitude": "52.82718910632357"
+        },
+        "data": {
+          "humidity_avg": 69.5714285714286,
+          "pressure_avg": 1007.62857142857,
+          "temperature_avg": 17.5,
+          "pm10_avg": 11.5857142857143,
+          "pm25_avg": 10.9714285714286
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "I LICEUM OGÓLNOKSZTAŁCĄCE IM. TADEUSZA KOŚCIUSZKI W DĄBROWIE TARNOWSKIEJ",
+          "street": "UL. MARSZAŁKA JÓZEFA PIŁSUDSKIEGO",
+          "post_code": "33-200",
+          "city": "DĄBROWA TARNOWSKA",
+          "longitude": "20.9830385",
+          "latitude": "50.16866618"
+        },
+        "data": {
+          "humidity_avg": 40.05,
+          "pressure_avg": 1000.29166666667,
+          "temperature_avg": 22.5083333333333,
+          "pm10_avg": 11.6,
+          "pm25_avg": 9.33333333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. JANA KOCHANOWSKIEGO W BĘCZARCE",
+          "street": null,
+          "post_code": "32-444",
+          "city": "BĘCZARKA",
+          "longitude": "19.8615647",
+          "latitude": "49.8750803"
+        },
+        "data": {
+          "humidity_avg": 42.7083333333333,
+          "pressure_avg": 985.075,
+          "temperature_avg": 20.9916666666667,
+          "pm10_avg": 8.63333333333333,
+          "pm25_avg": 8.16666666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 2 IM. TADEUSZA KOŚCIUSZKI W WIELICZCE - FILIA W SUŁKOWIE",
+          "street": null,
+          "post_code": "32-020",
+          "city": "SUŁKÓW",
+          "longitude": "20.1069823",
+          "latitude": "49.9883821"
+        },
+        "data": {
+          "humidity_avg": 48.6833333333333,
+          "pressure_avg": 989.083333333333,
+          "temperature_avg": 17.2416666666667,
+          "pm10_avg": 11.5916666666667,
+          "pm25_avg": 10.3583333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. ŚW. MAKSYMILIANA MARII KOLBEGO W ZALASOWEJ",
+          "street": "UL. KARPACKA",
+          "post_code": "33-159",
+          "city": "ZALASOWA",
+          "longitude": "21.1412067",
+          "latitude": "49.9305584"
+        },
+        "data": {
+          "humidity_avg": 36.9583333333333,
+          "pressure_avg": 981.733333333333,
+          "temperature_avg": 21.45,
+          "pm10_avg": 7.09166666666667,
+          "pm25_avg": 5.45
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM.MARSZAŁKA JÓZEFA PIŁSUDSKIEGO W GĄSKACH",
+          "street": null,
+          "post_code": "19-400",
+          "city": "GĄSKI",
+          "longitude": "15.921626",
+          "latitude": "54.236797"
+        },
+        "data": {
+          "humidity_avg": 80.3666666666667,
+          "pressure_avg": 1001.21666666667,
+          "temperature_avg": 11.925,
+          "pm10_avg": 7.76666666666667,
+          "pm25_avg": 8.66666666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. TADEUSZA KOŚCIUSZKI W ŁĘTOWICACH",
+          "street": null,
+          "post_code": "33-121",
+          "city": "ŁĘTOWICE",
+          "longitude": "20.845262",
+          "latitude": "49.994632"
+        },
+        "data": {
+          "humidity_avg": 46.95,
+          "pressure_avg": 999.033333333333,
+          "temperature_avg": 17.8166666666667,
+          "pm10_avg": 9.75833333333333,
+          "pm25_avg": 8.85
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA W WOLI WĘGIERSKIEJ",
+          "street": null,
+          "post_code": "37-560",
+          "city": "WOLA WĘGIERSKA",
+          "longitude": "22.5612181",
+          "latitude": "49.8633435"
+        },
+        "data": {
+          "humidity_avg": 37.7083333333333,
+          "pressure_avg": 992.166666666667,
+          "temperature_avg": 18.7666666666667,
+          "pm10_avg": 3.64166666666667,
+          "pm25_avg": 3.00833333333333
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA W ROŹWIENICY",
+          "street": null,
+          "post_code": "37-565",
+          "city": "ROŹWIENICA",
+          "longitude": "22.5987701",
+          "latitude": "49.9522037"
+        },
+        "data": {
+          "humidity_avg": 38.9083333333333,
+          "pressure_avg": 995.35,
+          "temperature_avg": 18.3,
+          "pm10_avg": 7.45833333333333,
+          "pm25_avg": 6.675
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. MIKOŁAJA KOPERNIKA W MIKOŁAJOWICACH",
+          "street": null,
+          "post_code": "33-121",
+          "city": "MIKOŁAJOWICE",
+          "longitude": "20.869079",
+          "latitude": "49.979718"
+        },
+        "data": {
+          "humidity_avg": 37.2,
+          "pressure_avg": 1000.03333333333,
+          "temperature_avg": 23.0166666666667,
+          "pm10_avg": 13.1583333333333,
+          "pm25_avg": 11.9166666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "I LICEUM OGÓLNOKSZTAŁCĄCE IM. MIKOŁAJA KOPERNIKA W GRAJEWIE",
+          "street": "UL. A. MICKIEWICZA",
+          "post_code": "19-200",
+          "city": "GRAJEWO",
+          "longitude": "22.452724999999997",
+          "latitude": "53.65094443707044"
+        },
+        "data": {
+          "humidity_avg": 64.8,
+          "pressure_avg": 1004.84166666667,
+          "temperature_avg": 13.9166666666667,
+          "pm10_avg": 5.95833333333333,
+          "pm25_avg": 4.925
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "TECHNIKUM NR 4 W WAŁBRZYCHU",
+          "street": "UL. KŁODZKA",
+          "post_code": "58-308",
+          "city": "WAŁBRZYCH",
+          "longitude": "16.3338299",
+          "latitude": "50.7587738"
+        },
+        "data": {
+          "humidity_avg": 37.6416666666667,
+          "pressure_avg": 966.691666666667,
+          "temperature_avg": 18.2916666666667,
+          "pm10_avg": 3.45,
+          "pm25_avg": 2.69166666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA IM. IGNACEGO SOLARZA W GACI",
+          "street": null,
+          "post_code": "37-207",
+          "city": "GAĆ",
+          "longitude": "22.373016099999994",
+          "latitude": "50.02446508943701"
+        },
+        "data": {
+          "humidity_avg": 33.4416666666667,
+          "pressure_avg": 997.5,
+          "temperature_avg": 22.5333333333333,
+          "pm10_avg": 3.86666666666667,
+          "pm25_avg": 3.21666666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "TECHNIKUM NR 1 W GLIWICACH",
+          "street": "UL. CHORZOWSKA",
+          "post_code": "44-100",
+          "city": "GLIWICE",
+          "longitude": "18.69488447",
+          "latitude": "50.298553"
+        },
+        "data": {
+          "humidity_avg": 37.6166666666667,
+          "pressure_avg": 995.975,
+          "temperature_avg": 19.5,
+          "pm10_avg": 7.84166666666667,
+          "pm25_avg": 6.99166666666667
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "TECHNIKUM NR 1 W PIASECZNIE",
+          "street": "UL. SZPITALNA",
+          "post_code": "05-500",
+          "city": "PIASECZNO",
+          "longitude": "21.0220213",
+          "latitude": "52.064158"
+        },
+        "data": {
+          "humidity_avg": 39.325,
+          "pressure_avg": 1009,
+          "temperature_avg": 20.0916666666667,
+          "pm10_avg": 4.1,
+          "pm25_avg": 3.175
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      },
+      {
+        "school": {
+          "name": "SZKOŁA PODSTAWOWA NR 10 Z ODDZIAŁAMI SPORTOWYMI W BIELAWIE",
+          "street": "UL. GEN. GROTA ROWECKIEGO",
+          "post_code": "58-260",
+          "city": "BIELAWA",
+          "longitude": "16.61694446",
+          "latitude": "50.68265975"
+        },
+        "data": {
+          "humidity_avg": 45.8857142857143,
+          "pressure_avg": 986.542857142857,
+          "temperature_avg": 15.8,
+          "pm10_avg": 3.32857142857143,
+          "pm25_avg": 3.21428571428571
+        },
+        "timestamp": "2024-05-10 12:36:55"
+      }
+    ],
+    "it_has_next_page": true,
+    "pages_total": 102
+  }
