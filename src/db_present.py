@@ -32,14 +32,13 @@ Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
 
+font_size = 8
 
 class MapGUI(QWidget):
     def __init__(self):
         super().__init__()
-        self.curr_showed_school = None
-        self.day_offset = 1
         self.initUI()
-        self.curr_showed_school = 1 # for plots
+        self.curr_showed_school = None # for plots
         self.day_offset = 1
         self.api_handler = ApiHandler()
         self.timer = QtCore.QTimer()
@@ -59,6 +58,7 @@ class MapGUI(QWidget):
 
         # Fetch school data from the database
         schools = session.query(School).all()
+        self.school_dict = {"Poland": None}
         
         # Add markers for each school to the map
         for school in schools:
@@ -68,6 +68,12 @@ class MapGUI(QWidget):
                 tooltip=folium.Tooltip(f"{school.name}<br>PM10:\t{pm_info['pm10']:.2f}<br>PM2.5\t{pm_info['pm25']:.2f}"),
                 icon=folium.Icon(color=air_color, icon="wind")
             ).add_to(poland_map)
+            self.school_dict[school.name] = school.school_id
+            
+            
+        self.combo_box = QComboBox()
+        self.combo_box.addItems(list(self.school_dict.keys()))
+        self.combo_box.currentIndexChanged.connect(self.selection_change)
 
         html_map = poland_map._repr_html_()
         map_view = QWebEngineView()
@@ -133,12 +139,20 @@ class MapGUI(QWidget):
         main_layout.addWidget(self.slider_label, 1, 1)
         main_layout.addWidget(timeline_slider, 1, 0)
         main_layout.addWidget(scroll_area, 0, 1)
+        main_layout.addWidget(self.combo_box, 2, 0)
         self.setLayout(main_layout)
         self.setWindowTitle("Poland Map GUI")
         
         self.page = map_view.page()
         self.page.loadFinished.connect(self.on_load_finished)
         self.page.runJavaScript("window.pyObj = { setSchool: function(id) { window.bridge.setSchool(id); } };")
+
+
+    def selection_change(self, i):
+        print(f"Selected: {self.combo_box.itemText(i)}")
+        self.curr_showed_school = self.school_dict[self.combo_box.itemText(i)]
+        self.update_plots()
+        
 
     def on_load_finished(self):
         self.page.runJavaScript("window.pyObj = { setSchool: function(id) { window.bridge.setSchool(id); } };")
@@ -149,6 +163,7 @@ class MapGUI(QWidget):
     
     def slider_changed(self, value):
         self.day_offset = value
+        self.update_plots()
 
     def update_plots(self):
         session = Session()
@@ -173,21 +188,21 @@ class MapGUI(QWidget):
         time = []
         latest_day = self.timestamps[-1].split()[0] # latest acquired day
         latest_date = datetime.strptime(latest_day, "%Y-%m-%d")
-        selected_dates = [(latest_date - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(self.day_offset)]
+        selected_date = [(latest_date - timedelta(days=self.day_offset)).strftime("%Y-%m-%d")]
 
 
         for elem in self.timestamps:
-            if elem.split()[0] in selected_dates:
+            if elem.split()[0] in selected_date:
                 time.append(elem.split()[1][:-3])
         hours = []
         for t in time:
             h, m = map(int, t.split(':'))
             hours.append(h + m/60)
         x_labels = [f"{i}h" for i in range(0, 25, 3)]
-        self.slider_label.setText(f"{selected_dates[-1]} to {selected_dates[0]}")
+        self.slider_label.setText(f"{selected_date[0]}")
         
         for timestamp_str in self.timestamps:
-            if timestamp_str.split()[0] in selected_dates:
+            if timestamp_str.split()[0] in selected_date:
                 timestamp_data = [data for data in smog_data if data.timestamp.stamp == timestamp_str]
                 pm10_values = [data.pm10 for data in timestamp_data if data.pm10 is not None]
                 pm25_values = [data.pm25 for data in timestamp_data if data.pm25 is not None]
@@ -218,7 +233,7 @@ class MapGUI(QWidget):
             print(f"curr_showed_school is None")
         ax1.scatter(hours, mean_pm10_values, label='Mean PM10')
         ax1.set_xlabel('Timestamp')
-        ax1.set_title(fr'$\bf{{Mean\ PM10}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
+        ax1.set_title(fr'$\bf{{Mean\ PM10}}$ - {school_name}{selected_date[0]}', fontdict={"fontsize": font_size})
         ax1.legend(loc='best')
         ax1.set_xticks(range(0, 25, 3))
         ax1.set_xticklabels(x_labels)
@@ -226,16 +241,16 @@ class MapGUI(QWidget):
         ax2 = self.fig2.add_subplot(111)
         ax2.scatter(hours, mean_pm25_values, label='Mean PM25')
         ax2.set_xlabel('Timestamp')
-        ax2.set_title(fr'$\bf{{Mean\ PM25}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
+        ax2.set_title(fr'$\bf{{Mean\ PM25}}$ - {school_name} {selected_date[0]}', fontdict={"fontsize": font_size})
         ax2.legend(loc='best')
         ax2.set_xticks(range(0, 25, 3))
         ax2.set_xticklabels(x_labels)
 
         ax3 = self.fig3.add_subplot(111)
         ax3.set_xlabel('Timestamp')
-        ax3.scatter(hours, hours, label='Max PM10 - {school_name}')
-        ax3.scatter(hours, hours, label='Max PM25 - {school_name}')
-        ax3.set_title(fr'$\bf{{Max\ PM10\ and\ PM25}}$ {selected_dates[-1]} to {selected_dates[0]}')
+        ax3.scatter(hours, hours, label='Max PM10')
+        ax3.scatter(hours, hours, label='Max PM25')
+        ax3.set_title(fr'$\bf{{Max\ PM10\ and\ PM25}}$ - {school_name} {selected_date[0]}', fontdict={"fontsize": font_size})
         ax3.legend(loc='best')
         ax3.set_xticks(range(0, 25, 3))
         ax3.set_xticklabels(x_labels)
@@ -243,7 +258,7 @@ class MapGUI(QWidget):
         ax4 = self.fig4.add_subplot(111)
         ax4.scatter(hours, mean_humidity_values, label='Mean Humidity')
         ax4.set_xlabel('Timestamp')
-        ax4.set_title(fr'$\bf{{Mean\ Humidity}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
+        ax4.set_title(fr'$\bf{{Mean\ Humidity}}$ - {school_name} {selected_date[0]}', fontdict={"fontsize": font_size})
         ax4.legend(loc='best')
         ax4.set_xticks(range(0, 25, 3))
         ax4.set_xticklabels(x_labels)
@@ -251,7 +266,7 @@ class MapGUI(QWidget):
         ax5 = self.fig5.add_subplot(111)
         ax5.scatter(hours, mean_temperature_values, label='Mean Temperature')
         ax5.set_xlabel('Timestamp')
-        ax5.set_title(fr'$\bf{{Mean\ Temperature}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
+        ax5.set_title(fr'$\bf{{Mean\ Temperature}}$ - {school_name} {selected_date[0]}', fontdict={"fontsize": font_size})
         ax5.legend(loc='best')
         ax5.set_xticks(range(0, 25, 3))
         ax5.set_xticklabels(x_labels)
