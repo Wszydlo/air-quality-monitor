@@ -5,9 +5,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSlider, QGridLayout, QScrollArea, QComboBox, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebEngineWidgets import QWebEngineSettings
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from PyQt5 import QtCore
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot
 import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
@@ -18,9 +18,11 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from db_create import *
+from api_handler import ApiHandler
 
 # Create the database engine
-engine = create_engine('postgresql://postgres:adb@localhost:5432/air-pollution')
+# db_path = f"postgresql://postgres:{psswrd}@localhost:5432/postgres"
+engine = create_engine('postgresql://postgres:postgres@localhost:5432/air-pollution')
 
 # Create the base class for declarative models
 Base = declarative_base()
@@ -34,11 +36,19 @@ session = Session()
 class MapGUI(QWidget):
     def __init__(self):
         super().__init__()
-        self.initUI()
-        self.curr_showed_school = None # for plots
+        self.curr_showed_school = None
         self.day_offset = 1
+        self.initUI()
+        self.curr_showed_school = 1 # for plots
+        self.day_offset = 1
+        self.api_handler = ApiHandler()
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.update_data)
+        self.timer.start(60000)
+        self.update_plots()
+        print("started timer")
 
-    def initUI(self):
+    def initUI(self, color='green'):
         # Create the main layout
         main_layout = QGridLayout()
 
@@ -49,19 +59,20 @@ class MapGUI(QWidget):
 
         # Fetch school data from the database
         schools = session.query(School).all()
-
+        
         # Add markers for each school to the map
         for school in schools:
+            pm_info, air_color = self.get_air_quality(school)
             folium.Marker(
                 location=[school.latitude, school.longitude],
-                tooltip=school.name,
-                icon=folium.Icon(color='green')
+                tooltip=folium.Tooltip(f"{school.name}<br>PM10:\t{pm_info['pm10']:.2f}<br>PM2.5\t{pm_info['pm25']:.2f}"),
+                icon=folium.Icon(color=air_color, icon="wind")
             ).add_to(poland_map)
+
         html_map = poland_map._repr_html_()
         map_view = QWebEngineView()
         QWebEngineSettings.globalSettings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
         map_view.setHtml(html_map)
-
         # Create the slider
         #self.timeline_combobox = QComboBox()
         self.slider_label = QLabel("")
@@ -79,7 +90,6 @@ class MapGUI(QWidget):
         self.canvas1 = FigureCanvas(self.fig1)
         self.canvas1.setFixedSize(900, 400)
         self.toolbar1 = NavigationToolbar(self.canvas1, self)
-
         self.fig2 = plt.figure()
         self.canvas2 = FigureCanvas(self.fig2)
         self.canvas2.setFixedSize(900, 400)
@@ -123,14 +133,9 @@ class MapGUI(QWidget):
         main_layout.addWidget(self.slider_label, 1, 1)
         main_layout.addWidget(timeline_slider, 1, 0)
         main_layout.addWidget(scroll_area, 0, 1)
-
         self.setLayout(main_layout)
         self.setWindowTitle("Poland Map GUI")
-
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.update_plots)
-        self.timer.start(6000)
-
+        
         self.page = map_view.page()
         self.page.loadFinished.connect(self.on_load_finished)
         self.page.runJavaScript("window.pyObj = { setSchool: function(id) { window.bridge.setSchool(id); } };")
@@ -147,10 +152,14 @@ class MapGUI(QWidget):
 
     def update_plots(self):
         session = Session()
-        smog_data = session.query(SmogData).options(joinedload(SmogData.timestamp)).all()
+        if self.curr_showed_school is None:
+            smog_data = session.query(SmogData).options(joinedload(SmogData.timestamp)).all()
+        else:
+            smog_data = session.query(SmogData).options(joinedload(SmogData.timestamp)).filter_by(school_id=self.curr_showed_school).all()
         self.timestamps = sorted(set([data.timestamp.stamp for data in smog_data]))
         mean_pm10_values = []
         mean_pm25_values = []
+
         mean_humidity_values = []
         mean_temperature_values = []
 
@@ -160,13 +169,12 @@ class MapGUI(QWidget):
         self.fig3.clear()
         self.fig4.clear()
         self.fig5.clear()
-
         
         time = []
         latest_day = self.timestamps[-1].split()[0] # latest acquired day
         latest_date = datetime.strptime(latest_day, "%Y-%m-%d")
         selected_dates = [(latest_date - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(self.day_offset)]
-        
+
 
         for elem in self.timestamps:
             if elem.split()[0] in selected_dates:
@@ -177,32 +185,10 @@ class MapGUI(QWidget):
             hours.append(h + m/60)
         x_labels = [f"{i}h" for i in range(0, 25, 3)]
         self.slider_label.setText(f"{selected_dates[-1]} to {selected_dates[0]}")
-
-        if self.curr_showed_school is None:
-            # Show data for the whole country
-            for timestamp_str in self.timestamps:
-                if timestamp_str.split()[0] in selected_dates:
-                    timestamp_data = [data for data in smog_data if data.timestamp.stamp == timestamp_str]
-                    pm10_values = [data.pm10 for data in timestamp_data if data.pm10 is not None]
-                    pm25_values = [data.pm25 for data in timestamp_data if data.pm25 is not None]
-                    humidity_values = [data.humidity for data in timestamp_data if data.humidity is not None]
-                    temperature_values = [data.temperature for data in timestamp_data if data.temperature is not None]
-                    mean_pm10 = sum(pm10_values) / len(pm10_values) if pm10_values else None
-                    mean_pm25 = sum(pm25_values) / len(pm25_values) if pm25_values else None
-                    mean_humidity = sum(humidity_values) / len(humidity_values) if humidity_values else None
-                    mean_temperature = sum(temperature_values) / len(temperature_values) if temperature_values else None
-                    if mean_pm10 is not None:
-                        mean_pm10_values.append(mean_pm10)
-                    if mean_pm25 is not None:
-                        mean_pm25_values.append(mean_pm25)
-                    if mean_humidity is not None:
-                        mean_humidity_values.append(mean_humidity)
-                    if mean_temperature is not None:
-                        mean_temperature_values.append(mean_temperature)
-        else:
-            # Show data for the specific school
-            for timestamp_str in self.timestamps:
-                timestamp_data = [data for data in smog_data if data.timestamp.stamp == timestamp_str and data.school_id == self.curr_showed_school]
+        
+        for timestamp_str in self.timestamps:
+            if timestamp_str.split()[0] in selected_dates:
+                timestamp_data = [data for data in smog_data if data.timestamp.stamp == timestamp_str]
                 pm10_values = [data.pm10 for data in timestamp_data if data.pm10 is not None]
                 pm25_values = [data.pm25 for data in timestamp_data if data.pm25 is not None]
                 humidity_values = [data.humidity for data in timestamp_data if data.humidity is not None]
@@ -219,14 +205,20 @@ class MapGUI(QWidget):
                     mean_humidity_values.append(mean_humidity)
                 if mean_temperature is not None:
                     mean_temperature_values.append(mean_temperature)
-
         session.close()
-
         # Create subplots and plot the data
         ax1 = self.fig1.add_subplot(111)
+        if self.curr_showed_school is not None:
+            print(f"curr_showed_school: {self.curr_showed_school}")
+            school_name = session.query(School).filter_by(school_id=self.curr_showed_school).one_or_none().name
+            # ax1.plot(timestamps, mean_pm10_values, label=f'Mean PM10 - {school.name}')
+            # ax1.set_title(f'Mean PM10 - {school.name}')
+        else:
+            school_name = "Poland"
+            print(f"curr_showed_school is None")
         ax1.scatter(hours, mean_pm10_values, label='Mean PM10')
         ax1.set_xlabel('Timestamp')
-        ax1.set_title(fr'$\bf{{Mean\ PM10}}$ {selected_dates[-1]} to {selected_dates[0]}')
+        ax1.set_title(fr'$\bf{{Mean\ PM10}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
         ax1.legend(loc='best')
         ax1.set_xticks(range(0, 25, 3))
         ax1.set_xticklabels(x_labels)
@@ -234,15 +226,15 @@ class MapGUI(QWidget):
         ax2 = self.fig2.add_subplot(111)
         ax2.scatter(hours, mean_pm25_values, label='Mean PM25')
         ax2.set_xlabel('Timestamp')
-        ax2.set_title(fr'$\bf{{Mean\ PM25}}$ {selected_dates[-1]} to {selected_dates[0]}')
+        ax2.set_title(fr'$\bf{{Mean\ PM25}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
         ax2.legend(loc='best')
         ax2.set_xticks(range(0, 25, 3))
         ax2.set_xticklabels(x_labels)
 
         ax3 = self.fig3.add_subplot(111)
         ax3.set_xlabel('Timestamp')
-        ax3.scatter(hours, hours, label='Max PM10')
-        ax3.scatter(hours, hours, label='Max PM25')
+        ax3.scatter(hours, hours, label='Max PM10 - {school_name}')
+        ax3.scatter(hours, hours, label='Max PM25 - {school_name}')
         ax3.set_title(fr'$\bf{{Max\ PM10\ and\ PM25}}$ {selected_dates[-1]} to {selected_dates[0]}')
         ax3.legend(loc='best')
         ax3.set_xticks(range(0, 25, 3))
@@ -251,7 +243,7 @@ class MapGUI(QWidget):
         ax4 = self.fig4.add_subplot(111)
         ax4.scatter(hours, mean_humidity_values, label='Mean Humidity')
         ax4.set_xlabel('Timestamp')
-        ax4.set_title(fr'$\bf{{Mean\ Humidity}}$ {selected_dates[-1]} to {selected_dates[0]}')
+        ax4.set_title(fr'$\bf{{Mean\ Humidity}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
         ax4.legend(loc='best')
         ax4.set_xticks(range(0, 25, 3))
         ax4.set_xticklabels(x_labels)
@@ -259,7 +251,7 @@ class MapGUI(QWidget):
         ax5 = self.fig5.add_subplot(111)
         ax5.scatter(hours, mean_temperature_values, label='Mean Temperature')
         ax5.set_xlabel('Timestamp')
-        ax5.set_title(fr'$\bf{{Mean\ Temperature}}$ {selected_dates[-1]} to {selected_dates[0]}')
+        ax5.set_title(fr'$\bf{{Mean\ Temperature}}$ - {school_name} {selected_dates[-1]} to {selected_dates[0]}')
         ax5.legend(loc='best')
         ax5.set_xticks(range(0, 25, 3))
         ax5.set_xticklabels(x_labels)
@@ -270,6 +262,24 @@ class MapGUI(QWidget):
         self.canvas3.draw()
         self.canvas4.draw()
         self.canvas5.draw()
+
+    
+    def update_data(self):
+        print("Timeout - refreshing")
+        self.api_handler.update_database()
+        self.update_plots()
+    
+    def get_air_quality(self, school):
+        smog_data = session.query(SmogData).where(SmogData.school_id == school.school_id).order_by(desc(SmogData.stamp_id)).first()
+        print(f"latest stamp for school {smog_data.school.name} with id {smog_data.school.school_id} is {smog_data.timestamp.stamp}")
+        pm10 = smog_data.pm10
+        pm25 = smog_data.pm25
+        return {"pm10":pm10, "pm25":pm25}, 'darkred' if (pm10 > 150 or pm25 > 110) else \
+                'red' if (150 >= pm10 > 110 or 110 >= pm25 > 75) else \
+                'orange' if (110 >= pm10 > 80 or 75 >= pm25 > 55) else \
+                'lightgreen' if (80 >= pm10 > 50 or 55 >= pm25 > 35) else \
+                'green' if (50 >= pm10 > 20 or 35 >= pm25 > 13) else \
+                'darkgreen'
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

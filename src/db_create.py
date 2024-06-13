@@ -58,7 +58,7 @@ class SmogData(Base):
     timestamp = relationship('Timestamp', back_populates='smog_data')
 
 # Create the database
-engine = create_engine('postgresql://postgres:adb@localhost:5432/air-pollution')
+engine = create_engine('postgresql://postgres:postgres@localhost:5432/air-pollution')
 Base.metadata.create_all(engine)
 
 # Create a session
